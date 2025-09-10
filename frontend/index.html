@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Seat Occupancy System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🪑 Smart Seat Occupancy System</h1>
+            <p>Real-time Auditorium Seat Monitoring</p>
+        </header>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Seats</h3>
+                <p id="total-seats">2</p>
+            </div>
+            <div class="stat-card available">
+                <h3>Available</h3>
+                <p id="available-seats">-</p>
+            </div>
+            <div class="stat-card occupied">
+                <h3>Occupied</h3>
+                <p id="occupied-seats">-</p>
+            </div>
+        </div>
+
+        <div class="auditorium">
+            <h2>Auditorium Layout</h2>
+            <div class="seats-grid">
+                <div class="seat" id="chair-1" data-chair="chair-1">
+                    <div class="seat-icon">🪑</div>
+                    <div class="seat-label">Seat 1</div>
+                    <div class="seat-status">Checking...</div>
+                </div>
+                <div class="seat" id="chair-2" data-chair="chair-2">
+                    <div class="seat-icon">🪑</div>
+                    <div class="seat-label">Seat 2</div>
+                    <div class="seat-status">Checking...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <span class="legend-color available"></span>
+                <span>Available</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color occupied"></span>
+                <span>Occupied</span>
+            </div>
+        </div>
+
+        <footer>
+            <p>Last Updated: <span id="last-update">Never</span></p>
+            <p>Status: <span id="connection-status">Connecting...</span></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
