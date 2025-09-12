@@ -1,6 +1,8 @@
 # Smart Seat Occupancy Detection System
 
-A real-time IoT-based seat occupancy monitoring system for auditoriums and lecture halls using ESP32 microcontroller and IR sensors. The system detects seat occupancy status and transmits data to a web dashboard for live visualization.
+A real-time IoT-based seat occupancy monitoring system for auditoriums and lecture halls using **ESP32 microcontroller** and IR sensors. The system detects seat occupancy status and transmits data to a web dashboard for live visualization.
+
+> **Note**: Repository name contains "stm32" but the project uses **ESP32** microcontroller (ESP32-WROOM-32).
 
 **🌐 Live Demo**: [https://stm32-smart-seat-occupancy-system.vercel.app/](https://stm32-smart-seat-occupancy-system.vercel.app/)
 
@@ -40,7 +42,7 @@ npm run dev
 
 ## Hardware Components
 
-- **Microcontroller**: ESP32 Development Board
+- **Microcontroller**: ESP32 Development Board (ESP32-WROOM-32) ⚠️ *Not STM32*
 - **Sensors**: IR Proximity Sensors (2x)
 - **Power Supply**: 5V USB or external power adapter
 - **Connectivity**: Wi-Fi (802.11 b/g/n)

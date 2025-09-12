@@ -2,6 +2,8 @@
 
 This guide explains how to deploy the Smart Seat Occupancy Detection System.
 
+> **Note**: This project uses **ESP32 microcontroller** (ESP32-WROOM-32). The repository name "stm32" is a naming artifact.
+
 ## Architecture Overview
 
 ```
