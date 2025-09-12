@@ -2,14 +2,41 @@
 
 A real-time IoT-based seat occupancy monitoring system for auditoriums and lecture halls using ESP32 microcontroller and IR sensors. The system detects seat occupancy status and transmits data to a web dashboard for live visualization.
 
+**🌐 Live Demo**: [https://stm32-smart-seat-occupancy-system.vercel.app/](https://stm32-smart-seat-occupancy-system.vercel.app/)
+
+## Quick Start
+
+```bash
+# Clone repository
+git clone https://github.com/Kanav-Bansal-22/stm32-smart-seat-occupancy-system.git
+cd stm32-smart-seat-occupancy-system
+
+# Start backend server
+cd server
+npm install
+npm start
+
+# Start frontend (in new terminal)
+cd ..
+npm install
+npm run dev
+
+# Upload firmware to ESP32
+# Open firmware/seat_occupancy_detector.ino in Arduino IDE
+# Update Wi-Fi credentials and server IP
+# Upload to ESP32
+```
+
 ## Features
 
 - **Real-time Monitoring**: Instant detection of seat occupancy using IR sensors
 - **IoT Connectivity**: Wi-Fi enabled ESP32 for wireless data transmission
-- **Web Dashboard**: Live visualization of seat availability in auditoriums
-- **Low Latency**: Direct GPIO register access for fast sensor reading
+- **Modern Web Dashboard**: React + TypeScript frontend with live visualization
+- **Low Latency**: Direct GPIO register access for fast sensor reading (<50ms)
 - **RESTful API**: HTTP POST requests to update seat status on server
 - **Scalable Architecture**: Easily expandable to monitor multiple seats
+- **Responsive Design**: Works on desktop, tablet, and mobile devices
+- **Database Integration**: Supabase for persistent data storage
 
 ## Hardware Components
 
@@ -42,24 +69,44 @@ A real-time IoT-based seat occupancy monitoring system for auditoriums and lectu
 | VCC | 3.3V | Power supply for sensors |
 | GND | GND | Common ground |
 
-## Software Architecture
+## Tech Stack
+
+### Hardware Layer
+- **Microcontroller**: ESP32-WROOM-32
+- **Sensors**: IR Proximity Sensors
+- **Communication**: Wi-Fi 802.11 b/g/n
+- **Power**: 5V USB / External adapter
 
 ### Firmware (ESP32)
 - **Language**: C++ (Arduino Framework)
 - **Libraries**: WiFi.h, HTTPClient.h
 - **Communication**: HTTP POST with JSON payload
-- **Optimization**: Direct GPIO register access for low-latency reading
+- **Optimization**: Direct GPIO register access for low-latency reading (<50ms)
+- **IDE**: Arduino IDE / PlatformIO
 
 ### Backend Server
-- **Framework**: Node.js with Express
-- **API Endpoint**: `/api/chairs`
-- **Data Format**: JSON
+- **Runtime**: Node.js 18+
+- **Framework**: Express.js
+- **Data Storage**: JSON file / Supabase (optional)
+- **API**: RESTful with CORS enabled
 - **Port**: 3001
+- **Deployment**: Railway / Render / VPS
 
 ### Frontend Dashboard
-- **Technology**: HTML/CSS/JavaScript
-- **Features**: Real-time seat status visualization
-- **Link**: [View Dashboard](https://smart-seat-dashboard.example.com)
+- **Framework**: React 18 + TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **State Management**: React Hooks
+- **HTTP Client**: Fetch API
+- **Deployment**: Vercel
+- **Live Demo**: [https://stm32-smart-seat-occupancy-system.vercel.app/](https://stm32-smart-seat-occupancy-system.vercel.app/)
+
+### Development Tools
+- **Version Control**: Git + GitHub
+- **Package Manager**: npm
+- **Linting**: ESLint
+- **Type Checking**: TypeScript
+- **Testing**: Manual + Hardware testing
 
 ## Installation
 
@@ -101,18 +148,52 @@ A real-time IoT-based seat occupancy monitoring system for auditoriums and lectu
    npm start
    ```
 
-### 4. Access Dashboard
+### 4. Frontend Setup
 
-Open browser and navigate to:
-```
-http://YOUR_SERVER_IP:3000
-```
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start development server:
+   ```bash
+   npm run dev
+   ```
+3. Build for production:
+   ```bash
+   npm run build
+   ```
+
+### 5. Access Dashboard
+
+**Live Demo**: [https://stm32-smart-seat-occupancy-system.vercel.app/](https://stm32-smart-seat-occupancy-system.vercel.app/)
+
+Or run locally at: `http://localhost:5173`
 
 ## API Documentation
 
-### Update Seat Status
+### Base URL
+- **Local**: `http://localhost:3001`
+- **Production**: `http://YOUR_SERVER_IP:3001`
 
-**Endpoint**: `POST /api/chairs`
+### Endpoints
+
+#### 1. Health Check
+```http
+GET /health
+```
+
+**Response**:
+```json
+{
+  "status": "ok"
+}
+```
+
+#### 2. Update Seat Status
+```http
+POST /api/chairs
+Content-Type: application/json
+```
 
 **Request Body**:
 ```json
@@ -126,9 +207,35 @@ http://YOUR_SERVER_IP:3000
 ```json
 {
   "success": true,
-  "message": "Seat status updated",
-  "chairId": "chair-1",
-  "is_occupied": true
+  "previous": {
+    "is_occupied": false,
+    "updatedAt": "2025-09-10T10:30:00.000Z"
+  },
+  "current": {
+    "is_occupied": true,
+    "updatedAt": "2025-09-10T10:35:00.000Z"
+  }
+}
+```
+
+#### 3. Get All Chairs
+```http
+GET /api/chairs
+```
+
+**Response**:
+```json
+{
+  "chairs": {
+    "chair-1": {
+      "is_occupied": true,
+      "updatedAt": "2025-09-10T10:35:00.000Z"
+    },
+    "chair-2": {
+      "is_occupied": false,
+      "updatedAt": "2025-09-10T10:30:00.000Z"
+    }
+  }
 }
 ```
 
@@ -206,19 +313,29 @@ Benefits:
 ```
 stm32-smart-seat-occupancy-system/
 ├── firmware/
-│   └── seat_occupancy_detector.ino
+│   └── seat_occupancy_detector.ino    # ESP32 Arduino code
 ├── server/
-│   ├── server.js
+│   ├── index.js                        # Node.js Express server
+│   ├── chairs.json                     # Seat status database
 │   ├── package.json
-│   └── routes/
-│       └── chairs.js
-├── frontend/
-│   ├── index.html
-│   ├── style.css
-│   └── script.js
+│   └── README.md
+├── src/
+│   ├── components/
+│   │   ├── Chair.tsx                   # Individual chair component
+│   │   ├── DiningHall.tsx              # Main hall layout
+│   │   ├── DiningTable.tsx             # Table component
+│   │   └── TablePair.tsx               # Table pair component
+│   ├── services/
+│   │   └── supabase.ts                 # Database integration
+│   ├── App.tsx                         # Main React app
+│   ├── main.tsx                        # Entry point
+│   └── index.css                       # Global styles
 ├── docs/
-│   ├── circuit_diagram.png
-│   └── setup_guide.md
+│   └── CIRCUIT_DIAGRAM.md              # Hardware documentation
+├── package.json                        # Frontend dependencies
+├── vite.config.ts                      # Vite configuration
+├── tailwind.config.js                  # Tailwind CSS config
+├── tsconfig.json                       # TypeScript config
 ├── README.md
 └── LICENSE
 ```
